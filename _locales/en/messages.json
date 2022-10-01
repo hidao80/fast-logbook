@@ -27,9 +27,36 @@
         "message": "Cleaning +housework @wrivate"
     },
     "alt_shift_9": {
-        "message": ";Break"
+        "message": "^Break"
     },
     "register_the_string_to_the_shortcut_key": {
         "message": "Register the string in the shortcut key. Labels beginning with a semicolon will not be counted."
+    },
+    "punch_description": {
+        "message": "Displays the stamp popup."
+    },
+    "download_description": {
+        "message": "Download logs in any format."
+    },
+    "download_log": {
+        "message": "Download Logs"
+    },
+    "work_category": {
+        "message": "Task category"
+    },
+    "work_detail": {
+        "message": "Task details"
+    },
+    "work_time_hour": {
+        "message": "Working hours [hrs."
+    },
+    "work_time_min": {
+        "message": "Working time [min]"
+    },
+    "work_time_actual": {
+        "message": "Actual work"
+    },
+    "work_time_total": {
+        "message": "Total"
     }
 }
