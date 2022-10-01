@@ -1,0 +1,35 @@
+{
+    "appName": {
+        "message": "Fast logbook"
+    },
+    "appDesc": {
+        "message": "作業時間を簡単に記録・集計します。ファイルに保存することもできます。"
+    },
+    "shortcut_items_title": {
+        "message": "ショートカット項目"
+    },
+    "download_file_type": {
+        "message": "ダウンロードファイル形式"
+    },
+    "plaintext_log": {
+        "message": "プレーンテキスト"
+    },
+    "markdown_summary": {
+        "message": "Markdownの表"
+    },
+    "html_summary": {
+        "message": "HTMLの表"
+    },
+    "alt_shift_1": {
+        "message": "勉強 +昇進試験 @仕事"
+    },
+    "alt_shift_2": {
+        "message": "掃除 +家事 @プライベート"
+    },
+    "alt_shift_9": {
+        "message": ";休憩"
+    },
+    "register_the_string_to_the_shortcut_key": {
+        "message": "ショートカットキーに文字列を登録してください。セミコロンで始まるラベルは集計しません。"
+    }
+}
