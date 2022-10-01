@@ -264,7 +264,7 @@ export const toMarkdown = (log) => {
     let sum = 0;
     let total = 0;
     let output =
-        `業務名 | 業務内容 | 作業時間[時] | 作業時間[分]
+        `${__("work_category")} | ${__("work_detail")} | ${__("work_time_hour")} | ${__("work_time_min")}
 --- | --- | --: | --:
 `;
 
@@ -274,8 +274,8 @@ export const toMarkdown = (log) => {
         total += dataJson[category].time;
     }
 
-    output += "\n実働計： " + (Math.floor(sum / 60) + Math.round(sum % 60 / 15) / 4) + " h";
-    output += "\n総計： " + (Math.floor(total / 60) + Math.round(total % 60 / 15) / 4) + " h";
+    output += `\n${__("work_time_actual")}： ` + (Math.floor(sum / 60) + Math.round(sum % 60 / 15) / 4) + " h";
+    output += `\n${__("work_time_total")}： ` + (Math.floor(total / 60) + Math.round(total % 60 / 15) / 4) + " h";
 
     return output;
 };
