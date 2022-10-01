@@ -1,4 +1,8 @@
-# How to Install
+# fast Logbook
+
+[![LaraStan](https://github.com/hidao80/fast-logbook/actions/workflows/eslint.yml/badge.svg)](https://github.com/hidao80/fast-logbook/actions/workflows/eslint.yml)
+
+## How to Install
 
 1. Download the Zip file.
 2. Extract the downloaded Zip file.
