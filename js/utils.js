@@ -157,7 +157,7 @@ export const getTodayString = () => {
  */
 export const parse = (text) => {
     const TIME_LENGTH = 16;
-    const FIELD_SEPARATOR = ",";
+    const FIELD_SEPARATOR = ";";
     const RECORD_SEPARATOR = "\n";
 
     let timeStamp = [], jso = {};
