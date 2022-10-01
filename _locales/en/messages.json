@@ -1,0 +1,35 @@
+{
+    "app_name": {
+        "message": "Fast logbook"
+    },
+    "app_desc": {
+        "message": "Easily record and tally work hours. It can also be saved to a file."
+    },
+    "shortcut_items_title": {
+        "message": "Shortcut items"
+    },
+    "download_file_type": {
+        "message": "Download File Format"
+    },
+    "plaintext_log": {
+        "message": "Plain text"
+    },
+    "markdown_summary": {
+        "message": "Markdown Table"
+    },
+    "html_summary": {
+        "message": "HTML Table"
+    },
+    "alt_shift_1": {
+        "message": "Study +PromotionalExams @work"
+    },
+    "alt_shift_2": {
+        "message": "Cleaning +housework @wrivate"
+    },
+    "alt_shift_9": {
+        "message": ";Break"
+    },
+    "register_the_string_to_the_shortcut_key": {
+        "message": "Register the string in the shortcut key. Labels beginning with a semicolon will not be counted."
+    }
+}

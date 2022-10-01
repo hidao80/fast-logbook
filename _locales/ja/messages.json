@@ -1,8 +1,8 @@
 {
-    "appName": {
+    "app_name": {
         "message": "Fast logbook"
     },
-    "appDesc": {
+    "app_desc": {
         "message": "作業時間を簡単に記録・集計します。ファイルに保存することもできます。"
     },
     "shortcut_items_title": {
