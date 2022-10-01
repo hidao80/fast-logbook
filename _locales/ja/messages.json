@@ -20,16 +20,43 @@
     "html_summary": {
         "message": "HTMLの表"
     },
-    "alt_shift_1": {
+    "shortcut_1": {
         "message": "勉強 +昇進試験 @仕事"
     },
-    "alt_shift_2": {
+    "shortcut_2": {
         "message": "掃除 +家事 @プライベート"
     },
-    "alt_shift_9": {
+    "shortcut_9": {
         "message": ";休憩"
     },
     "register_the_string_to_the_shortcut_key": {
         "message": "ショートカットキーに文字列を登録してください。セミコロンで始まるラベルは集計しません。"
+    },
+    "punch_description": {
+        "message": "打刻ポップアップを表示します。"
+    },
+    "download_description": {
+        "message": "ログを任意の形式でダウンロードします。"
+    },
+    "download_log": {
+        "message": "ログのダウンロード"
+    },
+    "work_category": {
+        "message": "業務名"
+    },
+    "work_detail": {
+        "message": "業務内容"
+    },
+    "work_time_hour": {
+        "message": "作業時間[時]"
+    },
+    "work_time_min": {
+        "message": "作業時間[分]"
+    },
+    "work_time_actual": {
+        "message": "実働計"
+    },
+    "work_time_total": {
+        "message": "総計"
     }
 }

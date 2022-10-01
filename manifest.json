@@ -8,33 +8,29 @@
     "icons": {
         "256": "img/icon_256.png"
     },
-    "content_scripts": [
-        {
-            "run_at": "document_end",
-            "matches": [
-                "*://*/*"
-            ],
-            "js": [
-                "js/index.js",
-                "js/popup.js",
-                "js/options.js"
-            ],
-            "css": [
-                "css/popup.css"
-            ],
-            "html": [
-                "html/popup.html"
-            ]
-        }
-    ],
     "action": {
         "default_title": "__MSG_app_name__",
         "default_icon": "img/icon_256.png",
         "default_popup": "html/popup.html"
     },
+    "options_page": "html/options.html",
+    "background": {
+        "service_worker": "js/background.js",
+        "type": "module"
+    },
+    "commands": {
+        "_execute_action": {
+            "suggested_key": "Alt+Shift+0",
+            "description": "__MSG_punch_description__"
+        },
+        "log_download": {
+            "suggested_key": "Alt+Shift+D",
+            "description": "__MSG_download_description__"
+        }
+    },
     "permissions": [
         "storage",
-        "scripting"
-    ],
-    "options_page": "html/options.html"
+        "scripting",
+        "downloads"
+    ]
 }
