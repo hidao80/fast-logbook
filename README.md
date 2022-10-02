@@ -57,7 +57,7 @@ figure 5: Log downloaded in Markdown table
 -  [ ] If you enter the information from the free description field (number 0), it may not be displayed in the log preview section at the bottom of the popup, even though it is registered.
 -  [ ] If you edit directly in the log preview field at the bottom of the pop-up, the formatting may be corrupted and the data may not tally correctly, but there is no way to recover other than by manual intervention.
 -  [ ] It is not possible to close the aggregation period at any given time. You can work around this by copying the entire log from the preview column, trimming it with an editor, etc., and then putting it back in the preview column.
-- [ ] The screen says "Semicolons are not included in the actual working hours if they are prefixed by a semicolon," but in fact they are not included in the actual working hours only if they are prefixed by a "^".
+- [x] ~~The screen says "Semicolons are not included in the actual working hours if they are prefixed by a semicolon," but in fact they are not included in the actual working hours only if they are prefixed by a "^".~~
 
 ## License
 
