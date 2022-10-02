@@ -30,7 +30,7 @@
         "message": "^Break"
     },
     "register_the_string_to_the_shortcut_key": {
-        "message": "Register the string in the shortcut key. Labels beginning with a semicolon will not be counted."
+        "message": "Please register the string in the shortcut key. Tags beginning with "^" will not be counted."
     },
     "punch_description": {
         "message": "Displays the stamp popup."
