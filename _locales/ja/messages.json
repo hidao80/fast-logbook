@@ -30,7 +30,7 @@
         "message": "^休憩"
     },
     "register_the_string_to_the_shortcut_key": {
-        "message": "ショートカットキーに文字列を登録してください。セミコロンで始まるラベルは集計しません。"
+        "message": "ショートカットキーに文字列を登録してください。「^」で始まるタグは集計しません。"
     },
     "punch_description": {
         "message": "打刻ポップアップを表示します。"
