@@ -23,7 +23,7 @@ Option settings are saved automatically.
 3. Fill in the tasks corresponding to the numeric keypad shortcut keys from 1 to 9 keys. Tasks can be changed after stamping.
 4. If you prefix a task name with "^", it will be excluded from the actual working hours during that task. Please use this function for measuring break time, etc.
 
-![Screen shot: option screen](doc/screenshot/ss_option.png)
+![Screen shot: option screen](doc/screenshot/ss_option.png)  
 figure 1: Option screen
 
 ### 2. Stamp
@@ -34,21 +34,21 @@ figure 1: Option screen
 4. No matter which key you use to register a task, the date and time will be automatically appended. The text at the bottom of the popup can be freely edited, so you can modify it after registration.
 5. Pop-up windows can also be closed by pressing the escape key or "Alt+Shift+0" key.
 
-![Screen shot: popup screen](doc/screenshot/ss_popup.png)
+![Screen shot: popup screen](doc/screenshot/ss_popup.png)  
 figure 2: Pop-up screen
 
 ### 3. Download logs
 
 1. Click the "Download Logs" button at the top of the popup to download the log in the file format that was selected on the options screen.
-   2.Press "Alt+Shift+D" to download without opening the pop-up window.
+2. Press "Alt+Shift+D" to download without opening the pop-up window.
 
-![Screen shot: log file: plain text](doc/screenshot/ss_summary_plaintext.png)
+![Screen shot: log file: plain text](doc/screenshot/ss_summary_plaintext.png)  
 figure 3: Log downloaded in plain text
 
-![Screen shot: log file: html](doc/screenshot/ss_summary_html.png)
+![Screen shot: log file: html](doc/screenshot/ss_summary_html.png)  
 figure 4: Log downloaded in HTML table
 
-![Screen shot: log file: Markdown](doc/screenshot/ss_summary_markdown.png)
+![Screen shot: log file: Markdown](doc/screenshot/ss_summary_markdown.png)  
 figure 5: Log downloaded in Markdown table
 
 ## Known Defects
