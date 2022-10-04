@@ -1,5 +1,7 @@
-// import * as util from "./utils.js";
-import { $, i18nInit, translate, syncGet, LOG_DATA_KEY, FILE_TYPE_KEY } from "./utils.js";
+const DEBUG = false;
+
+import { $, syncGet, FILE_TYPE_KEY } from "./utils.js";
+import { i18nInit, translate } from "./i18n.js";
 
 window.onload = () => {
     i18nInit();

@@ -1,5 +1,6 @@
-import * as util from "./utils.js";
-import { $, i18nInit, syncGet, LOG_DATA_KEY, FILE_TYPE_KEY } from "./utils.js";
+const DEBUG = false;
+
+import { syncGet, LOG_DATA_KEY, FILE_TYPE_KEY } from "./utils.js";
 
 chrome.commands.onCommand.addListener((command) => {
     console.log(`background!${command}`);

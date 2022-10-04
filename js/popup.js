@@ -1,9 +1,12 @@
-import * as util from "./utils.js";
-import { $, i18nInit, translate, syncGet, LOG_DATA_KEY, FILE_TYPE_KEY } from "./utils.js";
+const DEBUG = false;
+
+import { $, getTodayString, syncGet, appendLog, LOG_DATA_KEY, FILE_TYPE_KEY } from "./utils.js";
+import { i18nInit, translate } from "./i18n.js";
+import * as download from "./download.js";
 
 const appendTime = (tag) => {
     var d = new Date();
-    return util.getTodayString() + " "
+    return getTodayString() + " "
         + `0${d.getHours()}`.slice(-2) + ":" + `0${d.getMinutes()}`.slice(-2)
         + tag;
 };
@@ -29,8 +32,8 @@ window.onload = () => {
     }
 
     $('input').addEventListener('change', (e) => {
-        util.appendLog(appendTime(e.target.value))
-            .then(util.updatecStatus)
+        appendLog(appendTime(e.target.value))
+            .then(updatecStatus)
             .then(window.close);
     });
 
@@ -41,7 +44,7 @@ window.onload = () => {
                 const type = values[1];
                 const downloadFunction = type + "Download";
                 console.log(type, downloadFunction);
-                util[downloadFunction](log);
+                download[downloadFunction](log);
             });
     });
 
@@ -54,7 +57,7 @@ window.onload = () => {
                 $('input').focus();
             } else {
                 const node = $("[data-i18n=shortcut_" + e.code.slice(-1) + "]");
-                util.appendLog(appendTime(node.value || node.textContent))
+                appendLog(appendTime(node.value || node.textContent))
                     .then(updatecStatus);
             }
         } else if (e.code == "Enter" || e.code == "Escape" || e.code == "Alt+Shift+0") {
