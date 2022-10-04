@@ -32,5 +32,5 @@ jobs:
         with:
           files: js/**
 
-#       - run: npx eslint ${{ steps.changed-files.outputs.all_changed_files }}
-       - run: npx eslint js/* js/lib/*
+      # - run: npx eslint ${{ steps.changed-files.outputs.all_changed_files }}
+      - run: npx eslint js/* js/lib/*
