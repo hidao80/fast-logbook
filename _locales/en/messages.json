@@ -48,10 +48,10 @@
         "message": "Task details"
     },
     "work_time_hour": {
-        "message": "Working hours [hrs."
+        "message": "Working hours [hrs.]"
     },
     "work_time_min": {
-        "message": "Working time [min]"
+        "message": "Working time [min.]"
     },
     "work_time_actual": {
         "message": "Actual work"
