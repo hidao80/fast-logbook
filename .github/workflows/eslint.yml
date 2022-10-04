@@ -24,7 +24,7 @@ jobs:
       #    key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
       - if: ${{ steps.node_modules_cache_id.outputs.cache-hit != 'true' }}
-        run: npm i -D eslint eslint-plugin-jsonc@latest @typescript-eslint/parser
+        run: npm i -D eslint eslint-plugin-jsonc@latest @typescript-eslint/parser @typescript-eslint/eslint-plugin
 
       #- name: Get changed files
       #  id: changed-files
