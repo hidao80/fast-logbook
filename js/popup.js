@@ -1,8 +1,8 @@
 const DEBUG = false;
 
-import { $, getTodayString, syncGet, appendLog, LOG_DATA_KEY, FILE_TYPE_KEY } from "./utils.js";
-import { i18nInit, translate } from "./i18n.js";
-import * as download from "./download.js";
+import { $, getTodayString, syncGet, appendLog, LOG_DATA_KEY, FILE_TYPE_KEY } from "./lib/utils.js";
+import { i18nInit, translate } from "./lib/i18n.js";
+import * as download from "./lib/download.js";
 
 const appendTime = (tag) => {
     var d = new Date();

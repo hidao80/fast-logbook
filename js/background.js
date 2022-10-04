@@ -1,6 +1,6 @@
 const DEBUG = false;
 
-import { syncGet, LOG_DATA_KEY, FILE_TYPE_KEY } from "./utils.js";
+import { syncGet, LOG_DATA_KEY, FILE_TYPE_KEY } from "./lib/utils.js";
 
 chrome.commands.onCommand.addListener((command) => {
     console.log(`background!${command}`);
