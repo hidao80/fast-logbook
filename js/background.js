@@ -1,5 +1,5 @@
 import { syncGet, LOG_DATA_KEY, FILE_TYPE_KEY } from "./lib/utils.js";
-import Log from "./lib/logger.js";
+import { Log } from "./lib/logger.js";
 
 chrome.commands.onCommand.addListener((command) => {
     Log.log(`background!${command}`);

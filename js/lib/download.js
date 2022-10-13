@@ -1,6 +1,6 @@
 import { __ } from "./i18n.js";
 import { getTodayString } from "./utils.js";
-import Log from "./logger.js";
+import { Log } from "./logger.js";
 
 /**
  * Have it downloaded in plain text format.

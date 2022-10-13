@@ -1,7 +1,7 @@
 import { $, getTodayString, syncGet, appendLog, LOG_DATA_KEY, FILE_TYPE_KEY } from "./lib/utils.js";
 import { i18nInit, translate } from "./lib/i18n.js";
 import * as download from "./lib/download.js";
-import Log from "./lib/logger.js";
+import { Log } from "./lib/logger.js";
 
 const appendTime = (tag) => {
     var d = new Date();
