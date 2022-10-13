@@ -1,7 +1,7 @@
 /**
- * Class of log functions that can control output suppression
- */
-export default class Logger {
+* Class of log functions that can control output suppression
+*/
+export class Logger {
     /**
      * Constructor
      * @param {boolean} isDisplay - If true, output
@@ -19,7 +19,7 @@ export default class Logger {
     }
 
     /**
-     * Pass to console.debug and also control the display
+     * Pass to Log.debug and also control the display
      * @param  {...any} args
      */
     debug(...args) {
@@ -27,7 +27,7 @@ export default class Logger {
     }
 
     /**
-     * Pass to console.info and also control the display
+     * Pass to Log.info and also control the display
      * @param  {...any} args
      */
     info(...args) {
@@ -35,7 +35,7 @@ export default class Logger {
     }
 
     /**
-     * Pass to console.log and also control the display
+     * Pass to Log.log and also control the display
      * @param  {...any} args
      */
     log(...args) {
@@ -43,7 +43,7 @@ export default class Logger {
     }
 
     /**
-     * Pass to console.warn and also control the display
+     * Pass to Log.warn and also control the display
      * @param  {...any} args
      */
     warn(...args) {
@@ -51,10 +51,14 @@ export default class Logger {
     }
 
     /**
-     * Pass to console.error and also control the display
+     * Pass to Log.error and also control the display
      * @param  {...any} args
      */
     error(...args) {
         if (this.isDisplay) console.error(...args);
     }
 }
+
+export default new Logger(true);
+export const enabled = new Logger(true);
+export const diabled = new Logger(false);

@@ -1,8 +1,7 @@
-const DEBUG = false;
-
 import { $, getTodayString, syncGet, appendLog, LOG_DATA_KEY, FILE_TYPE_KEY } from "./lib/utils.js";
 import { i18nInit, translate } from "./lib/i18n.js";
 import * as download from "./lib/download.js";
+import Log from "./lib/logger.js";
 
 const appendTime = (tag) => {
     var d = new Date();
@@ -43,7 +42,7 @@ window.onload = () => {
                 const log = values[0];
                 const type = values[1];
                 const downloadFunction = type + "Download";
-                console.log(type, downloadFunction);
+                Log.debug(type, downloadFunction);
                 download[downloadFunction](log);
             });
     });

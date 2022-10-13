@@ -1,5 +1,3 @@
-const DEBUG = false;
-
 import { $, syncGet } from "./utils.js";
 
 /**

@@ -1,7 +1,6 @@
-const DEBUG = false;
-
 import { __ } from "./i18n.js";
 import { getTodayString } from "./utils.js";
+import Log from "./logger.js";
 
 /**
  * Have it downloaded in plain text format.
@@ -84,7 +83,7 @@ export const parse = (text) => {
     for (let i = 1; i < timeStamp.length; i++) {
         let afterHour = parseInt(timeStamp[i].time.slice(-5, -3));
         let beforeHour = parseInt(timeStamp[i - 1].time.slice(-5, -3));
-        console.log(afterHour, beforeHour);
+        Log.debug(afterHour, beforeHour);
         let hour = afterHour - beforeHour < 0 ? afterHour + 24 - beforeHour : afterHour - beforeHour;
         let min = parseInt(timeStamp[i].time.slice(-2)) - parseInt(timeStamp[i - 1].time.slice(-2));
         // over the course of a day

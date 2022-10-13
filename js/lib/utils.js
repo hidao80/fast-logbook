@@ -1,6 +1,5 @@
-const DEBUG = false;
-
 import { __ } from "./i18n.js";
+import Log from "./logger.js";
 
 export const LOG_DATA_KEY = 'log';
 export const FILE_TYPE_KEY = 'file_type_value';
@@ -28,7 +27,7 @@ export const appendLog = async (tag) => {
     let log = await syncGet(LOG_DATA_KEY);
     log += "\n" + tag;
     const splitedLog = log.split("\n").slice(-LOG_MAX_LEN);
-    if (DEBUG) console.log("appendLog(): " + splitedLog.length);
+    Log.debug("appendLog(): " + splitedLog.length);
     await chrome.storage.sync.set({ [LOG_DATA_KEY]: splitedLog.join("\n").replace(/\n+/g, "\n").replace(/(^\n+|\n+$)/g, "") });
 };
 
@@ -57,7 +56,7 @@ export const debug = () => {
         .then(values => {
             const log = values[0];
             const type = values[1];
-            console.log({ log, type });
+            Log.debug({ log, type });
         });
 };
 

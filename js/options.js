@@ -1,5 +1,3 @@
-const DEBUG = false;
-
 import { $, syncGet, FILE_TYPE_KEY } from "./lib/utils.js";
 import { i18nInit, translate } from "./lib/i18n.js";
 
