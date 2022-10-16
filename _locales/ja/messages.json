@@ -38,6 +38,9 @@
     "download_description": {
         "message": "ログを任意の形式でダウンロードします。"
     },
+    "options_description": {
+        "message": "拡張機能のオプション画面を開きます。"
+    },
     "download_log": {
         "message": "ログのダウンロード"
     },

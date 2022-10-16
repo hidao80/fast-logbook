@@ -38,6 +38,9 @@
     "download_description": {
         "message": "Download logs in any format."
     },
+    "options_description": {
+        "message": "Open the extension options screen."
+    },
     "download_log": {
         "message": "Download Logs"
     },
