@@ -11,7 +11,7 @@ export function i18nInit() {
         if (node.type == 'text') {
             node.value = str;
         } else {
-            node.innerText = str;
+            node.textContent = str;
         }
     }
 }
@@ -35,7 +35,7 @@ export function translate(node) {
     const key = node.dataset.i18n;
     syncGet(key)
         .then(str => {
-            if (!str && typeof str != 'string') {
+            if (!str) {
                 str = __(key);
                 chrome.storage.sync.set({ [key]: str });
             }

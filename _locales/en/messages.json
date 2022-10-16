@@ -20,13 +20,13 @@
     "html_summary": {
         "message": "HTML Table"
     },
-    "alt_shift_1": {
+    "shortcut_1": {
         "message": "Study +PromotionalExams @work"
     },
-    "alt_shift_2": {
+    "shortcut_2": {
         "message": "Cleaning +housework @wrivate"
     },
-    "alt_shift_9": {
+    "shortcut_9": {
         "message": "^Break"
     },
     "register_the_string_to_the_shortcut_key": {
