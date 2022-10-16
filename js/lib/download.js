@@ -1,5 +1,5 @@
 import { __ } from "./i18n.js";
-import { getTodayString, syncGet, fixRoundingUnit, LOG_DATA_KEY, ROUNDING_UNIT_MINUTE_KEY } from "./utils.js";
+import { getTodayString, syncGet, getRoundingUnit, LOG_DATA_KEY, ROUNDING_UNIT_MINUTE_KEY } from "./utils.js";
 import { Log } from "./logger.js";
 
 /**
@@ -24,7 +24,7 @@ export function outputLog() {
     Promise.all([syncGet(LOG_DATA_KEY), syncGet(ROUNDING_UNIT_MINUTE_KEY)])
         .then(values => {
             const log = values[0];
-            const mins = fixRoundingUnit(values[1]);
+            const mins = getRoundingUnit(values[1]);
             const outputStr = `
 <style>
 .pt-5 {padding-top:3rem;}
