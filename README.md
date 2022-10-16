@@ -22,8 +22,9 @@ Option settings are saved automatically.
 2. Select the log download file format.
 3. Fill in the tasks corresponding to the numeric keypad shortcut keys from 1 to 9 keys. Tasks can be changed after stamping.
 4. If you prefix a task name with "^", it will be excluded from the actual working hours during that task. Please use this function for measuring break time, etc.
+5. Press "Alt+Shift+O" key opens the options screen without opening the menu.
 
-![Screen shot: option screen](doc/screenshot/ss_option.png)  
+![Screen shot: option screen](doc/screenshot/ss_option_2.png)
 figure 1: Option screen
 
 ### 2. Stamp
@@ -34,30 +35,30 @@ figure 1: Option screen
 4. No matter which key you use to register a task, the date and time will be automatically appended. The text at the bottom of the popup can be freely edited, so you can modify it after registration.
 5. Pop-up windows can also be closed by pressing the escape key or "Alt+Shift+0" key.
 
-![Screen shot: popup screen](doc/screenshot/ss_popup.png)  
+![Screen shot: popup screen](doc/screenshot/ss_popup_2.png)
 figure 2: Pop-up screen
 
 ### 3. Download logs
 
-1. Click the "Download Logs" button at the top of the popup to download the log in the file format that was selected on the options screen.
+1. Click the "Download Logs" button at the top of the popup to download an html file containing the HTML tables, raw logs, and Markdown tables all in one.
 2. Press "Alt+Shift+D" to download without opening the pop-up window.
 
-![Screen shot: log file: plain text](doc/screenshot/ss_summary_plaintext.png)  
+![Screen shot: log file: plain text](doc/screenshot/ss_summary_plaintext.png)
 figure 3: Log downloaded in plain text
 
-![Screen shot: log file: html](doc/screenshot/ss_summary_html.png)  
+![Screen shot: log file: html](doc/screenshot/ss_summary_html.png)
 figure 4: Log downloaded in HTML table
 
-![Screen shot: log file: Markdown](doc/screenshot/ss_summary_markdown.png)  
+![Screen shot: log file: Markdown](doc/screenshot/ss_summary_markdown.png)
 figure 5: Log downloaded in Markdown table
 
 ## Known Defects
 
--  [ ] Logs can only be up to the most recent 100 logs. Older logs before that are erased.
--  [ ] If you enter the information from the free description field (number 0), it may not be displayed in the log preview section at the bottom of the popup, even though it is registered.
--  [ ] If you edit directly in the log preview field at the bottom of the pop-up, the formatting may be corrupted and the data may not tally correctly, but there is no way to recover other than by manual intervention.
--  [ ] It is not possible to close the aggregation period at any given time. You can work around this by copying the entire log from the preview column, trimming it with an editor, etc., and then putting it back in the preview column.
-- [x] ~~The screen says "Semicolons are not included in the actual working hours if they are prefixed by a semicolon," but in fact they are not included in the actual working hours only if they are prefixed by a "^".~~
+-   [ ] Logs can only be up to the most recent 100 logs. Older logs before that are erased.
+-   [x] If you enter the information from the free description field (number 0), it may not be displayed in the log preview section at the bottom of the popup, even though it is registered.
+-   [ ] If you edit directly in the log preview field at the bottom of the pop-up, the formatting may be corrupted and the data may not tally correctly, but there is no way to recover other than by manual intervention.
+-   [ ] It is not possible to close the aggregation period at any given time. You can work around this by copying the entire log from the preview column, trimming it with an editor, etc., and then putting it back in the preview column.
+-   [x] ~~The screen says "Semicolons are not included in the actual working hours if they are prefixed by a semicolon," but in fact they are not included in the actual working hours only if they are prefixed by a "^".~~
 
 ## License
 
