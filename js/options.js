@@ -1,5 +1,5 @@
-import { $, syncGet, FILE_TYPE_KEY } from "./lib/utils.js";
-import { i18nInit, __, translate } from "./lib/i18n.js";
+import { $, syncGet, getRoundingUnit, ROUNDING_UNIT_MINUTE_KEY } from "./lib/utils.js";
+import { i18nInit, translate } from "./lib/i18n.js";
 import { Log } from "./lib/logger.js";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -15,16 +15,13 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Select the last item selected
-    syncGet(FILE_TYPE_KEY)
-        .then(type => {
-            Log.debug(type);
-            $('select').value = type || 'plainText';
+    syncGet(ROUNDING_UNIT_MINUTE_KEY)
+        .then(value => {
+            $('select').value = getRoundingUnit(value);
         });
 
     $('select').addEventListener('change', e => {
-        chrome.storage.sync.set({ [FILE_TYPE_KEY]: e.target.value });
+        const mins = Number(e.target.value);
+        chrome.storage.sync.set({ [ROUNDING_UNIT_MINUTE_KEY]: mins });
     });
-
-    // debug();
 });

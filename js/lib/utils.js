@@ -2,7 +2,7 @@ import { __ } from "./i18n.js";
 import { Log } from "./logger.js";
 
 export const LOG_DATA_KEY = 'log';
-export const FILE_TYPE_KEY = 'file_type_value';
+export const ROUNDING_UNIT_MINUTE_KEY = 'rounding_mins';
 
 /**
  * Alias for querySelector
@@ -33,18 +33,6 @@ export function getTodayString() {
 }
 
 /**
- * storage.sync.get,set preview
- */
-export function debug() {
-    Promise.all([syncGet(LOG_DATA_KEY), syncGet(FILE_TYPE_KEY)])
-        .then(values => {
-            const log = values[0];
-            const type = values[1];
-            Log.debug({ log, type });
-        });
-}
-
-/**
  * Retrieve strings stored in storage (asynchronous)
  *
  * @param {string} key Object Keys
@@ -55,4 +43,24 @@ export function syncGet(key) {
         .then(obj => {
             return obj[key] || __(key);
         });
+}
+
+/**
+ * Obtain valid rounding unit time
+ *
+ * @param {int|string|NaN} value
+ * @returns {int} Rounding unit: 1, 5, 10, 15, 30, 60
+ */
+export function getRoundingUnit(value) {
+    let mins = 1;
+    switch (Number(value)) {
+        case 1:
+        case 5:
+        case 10:
+        case 15:
+        case 30:
+        case 60:
+            mins = Number(value);
+    }
+    return mins;
 }

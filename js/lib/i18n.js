@@ -8,7 +8,6 @@ export function i18nInit() {
     const nodes = $('[data-i18n]');
     for (const node of nodes) {
         const str = __(node.dataset.i18n);
-        Log.debug(node, str);
         if (node.type == 'text') {
             node.value = str;
         } else {
@@ -34,10 +33,8 @@ export function __(key) {
  */
 export function translate(node) {
     const key = node.dataset.i18n;
-    Log.debug(key);
     syncGet(key)
         .then(str => {
-            Log.debug(str);
             if (!str && typeof str != 'string') {
                 str = __(key);
                 chrome.storage.sync.set({ [key]: str });

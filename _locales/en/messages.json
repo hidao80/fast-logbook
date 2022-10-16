@@ -58,5 +58,26 @@
     },
     "work_time_total": {
         "message": "Total"
+    },
+    "rounding_unit": {
+        "message": "Rounding unit"
+    },
+    "1min": {
+        "message": "1 min."
+    },
+    "5min": {
+        "message": "5 mins."
+    },
+    "10min": {
+        "message": "10 mins."
+    },
+    "15min": {
+        "message": "15 mins."
+    },
+    "30min": {
+        "message": "30 mins."
+    },
+    "60min": {
+        "message": "60 mins."
     }
 }

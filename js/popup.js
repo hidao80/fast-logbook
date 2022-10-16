@@ -1,4 +1,4 @@
-import { $, getTodayString, syncGet, LOG_DATA_KEY, FILE_TYPE_KEY } from "./lib/utils.js";
+import { $, getTodayString, syncGet, LOG_DATA_KEY } from "./lib/utils.js";
 import { i18nInit, __, translate } from "./lib/i18n.js";
 import { outputLog } from "./lib/download.js";
 import { Log } from "./lib/logger.js";
@@ -62,7 +62,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     for (const node of $('label')) {
         translate(node);
-        Log.debug(node);
     }
 
     $('input').addEventListener('change', (e) => {
@@ -106,6 +105,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     updateLogs();
-
-    // debug();
 });

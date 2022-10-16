@@ -1,33 +1,6 @@
 import { __ } from "./i18n.js";
-import { getTodayString, syncGet, LOG_DATA_KEY, FILE_TYPE_KEY } from "./utils.js";
+import { getTodayString, syncGet, fixRoundingUnit, LOG_DATA_KEY, ROUNDING_UNIT_MINUTE_KEY } from "./utils.js";
 import { Log } from "./logger.js";
-
-/**
- * Have it downloaded in plain text format.
- *
- * @param {*} log Original data to be downloaded
- */
-export function plainTextDownload(log) {
-    download(log, 'txt', 'text/plain');
-}
-
-/**
- * Let them download it in html format.
- *
- * @param {*} log Original data to be downloaded
- */
-export function markdownTableDownload(log) {
-    download(toMarkdown(log), 'md', 'text/markdown');
-}
-
-/**
- * Have it downloaded in markdown format.
- *
- * @param {string} log Original data to be downloaded
- */
-export function htmlTableDownload(log) {
-    download(toHtml(log), 'html', 'text/html');
-}
 
 /**
  * Give the string a file type and have it downloaded.
@@ -36,7 +9,7 @@ export function htmlTableDownload(log) {
  * @param {string} extension (filename) extension
  * @param {string} mimeType mime type
  */
-export function download(outputDataString, extension, mimeType) {
+export function download(outputDataString, extension = '.html', mimeType = 'text/html') {
     const reader = new FileReader();
     reader.readAsDataURL(new Blob([outputDataString], { type: mimeType }));
     reader.onload = () => {
@@ -48,29 +21,28 @@ export function download(outputDataString, extension, mimeType) {
 }
 
 export function outputLog() {
-    Promise.all([syncGet(LOG_DATA_KEY), syncGet(FILE_TYPE_KEY)])
+    Promise.all([syncGet(LOG_DATA_KEY), syncGet(ROUNDING_UNIT_MINUTE_KEY)])
         .then(values => {
-            console.debug(values);
             const log = values[0];
-            const type = values[1] || 'plainText';
-            const downloadFunction = type + "Download";
-            Log.debug(type, downloadFunction);
-
+            const mins = fixRoundingUnit(values[1]);
             const outputStr = `
 <style>
 .pt-5 {padding-top:3rem;}
 </style>
+<h2>${__('html_summary')}</h2>
 <div>
-${toHtml(log)}
+${toHtml(log, mins)}
 </div>
-<div class="pt-5"><pre><code>
+<h2 class="pt-5">${__('plaintext_log')}</h2>
+<div><pre><code>
 ${log}
 </code></pre></div>
-<div class="pt-5"><pre><code>
-${toMarkdown(log)}
+<h2 class="pt-5">${__('markdown_summary')}</h2>
+<div><pre><code>
+${toMarkdown(log, mins)}
 </code></pre></div>
 `;
-            download(outputStr, '.html', 'text/html');
+            download(outputStr);
         });
 }
 
@@ -78,9 +50,10 @@ ${toMarkdown(log)}
  * Analyze and tabulate raw data from work hour logs
  *
  * @param {string} text Raw data of work time logs
+ * @param {int} mins Rounding unit (mins.)
  * @returns {object} Categorized aggregate data (json)
  */
-export function parse(text) {
+export function parse(text, mins) {
     const TIME_LENGTH = 16;
     const FIELD_SEPARATOR = ";";
     const RECORD_SEPARATOR = "\n";
@@ -123,9 +96,9 @@ export function parse(text) {
         obj[timeStamp[i - 1].category].time += hour * 60 + min;
     }
 
-    // Convert work time to 0.25 increments of time
+    // Convert work time to ROUNDIGN_UNIT increments of time
     Object.keys(obj).forEach(item => {
-        obj[item].round = Math.floor(obj[item].time / 60) + Math.round(obj[item].time % 60 / 15) / 4;
+        obj[item].round = Math.floor(obj[item].time / 60) + Number((Math.round(obj[item].time % 60 / mins) * mins / 60).toFixed(2));
     });
 
     return obj;
@@ -155,10 +128,11 @@ function fetchMinFromTime(time) {
  * Make a table of the aggregated time in HTML format
  *
  * @param {object} log Categorized aggregate data (json)
+ * @param {int} mins Rounding unit (mins.)
  * @returns {string} HTML Table
  */
-export function toHtml(log) {
-    const dataJson = parse(log);
+export function toHtml(log, mins) {
+    const dataJson = parse(log, mins);
     const breakMark = "^";
     let sum = 0;
     let total = 0;
@@ -186,8 +160,8 @@ tr:nth-child(2n+1) {background-color:#dfc}
         total += dataJson[category].time;
     }
 
-    const sumStr = __("work_time_actual") + "： " + (Math.floor(sum / 60) + Math.round(sum % 60 / 15) / 4) + " h";
-    const totalStr = __("work_time_total") + "： " + (Math.floor(total / 60) + Math.round(total % 60 / 15) / 4) + " h";
+    const sumStr = __("work_time_actual") + "： " + (Math.floor(sum / 60) + Number((Math.round(sum % 60 / mins) * mins / 60).toFixed(2))) + " h";
+    const totalStr = __("work_time_total") + "： " + (Math.floor(total / 60) + Number((Math.round(total % 60 / mins) * mins / 60).toFixed(2))) + " h";
 
     output +=
         `</tbod></table>
@@ -203,10 +177,11 @@ ${totalStr}</p>
  * Make a markdown table of the aggregated time
  *
  * @param {object} log Categorized aggregate data (json)
+ * @param {int} mins Rounding unit (mins.)
  * @returns {string} markdown table
  */
-export function toMarkdown(log) {
-    const dataJson = parse(log);
+export function toMarkdown(log, mins) {
+    const dataJson = parse(log, mins);
     const breakMark = "^";
     let sum = 0;
     let total = 0;
@@ -221,8 +196,8 @@ export function toMarkdown(log) {
         total += dataJson[category].time;
     }
 
-    output += `\n${__("work_time_actual")}： ` + (Math.floor(sum / 60) + Math.round(sum % 60 / 15) / 4) + " h";
-    output += `\n${__("work_time_total")}： ` + (Math.floor(total / 60) + Math.round(total % 60 / 15) / 4) + " h";
+    output += `\n${__("work_time_actual")}： ` + (Math.floor(sum / 60) + Number((Math.round(sum % 60 / mins) * mins / 60).toFixed(2))) + " h";
+    output += `\n${__("work_time_total")}： ` + (Math.floor(total / 60) + Number((Math.round(total % 60 / mins) * mins / 60).toFixed(2))) + " h";
 
     return output;
 }

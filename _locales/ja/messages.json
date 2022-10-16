@@ -58,5 +58,26 @@
     },
     "work_time_total": {
         "message": "総計"
+    },
+    "rounding_unit": {
+        "message": "時間丸め単位"
+    },
+    "1min": {
+        "message": "1分"
+    },
+    "5min": {
+        "message": "5分"
+    },
+    "10min": {
+        "message": "10分"
+    },
+    "15min": {
+        "message": "15分"
+    },
+    "30min": {
+        "message": "30分"
+    },
+    "60min": {
+        "message": "60分"
     }
 }
