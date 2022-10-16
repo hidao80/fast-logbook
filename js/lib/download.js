@@ -166,8 +166,8 @@ tr:nth-child(2n+1) {background-color:#dfc}
     output +=
         `</tbod></table>
 <p>
-${sumStr}<br>
-${totalStr}</p>
+${sumStr} (${sum} ${__('mins')})<br>
+${totalStr} (${sum} ${__('mins')})</p>
 </bdoy></html>`;
 
     return output;
@@ -196,8 +196,8 @@ export function toMarkdown(log, mins) {
         total += dataJson[category].time;
     }
 
-    output += `\n${__("work_time_actual")}： ` + (Math.floor(sum / 60) + Number((Math.round(sum % 60 / mins) * mins / 60).toFixed(2))) + " h";
-    output += `\n${__("work_time_total")}： ` + (Math.floor(total / 60) + Number((Math.round(total % 60 / mins) * mins / 60).toFixed(2))) + " h";
+    output += `\n${__("work_time_actual")}： ` + (Math.floor(sum / 60) + Number((Math.round(sum % 60 / mins) * mins / 60).toFixed(2))) + ` h (${sum} ${__('mins')})`;
+    output += `\n${__("work_time_total")}： ` + (Math.floor(total / 60) + Number((Math.round(total % 60 / mins) * mins / 60).toFixed(2))) + ` h (${sum} ${__('mins')})`;
 
     return output;
 }

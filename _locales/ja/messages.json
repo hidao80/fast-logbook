@@ -79,5 +79,8 @@
     },
     "60min": {
         "message": "60分"
+    },
+    "mins": {
+        "message": "分"
     }
 }

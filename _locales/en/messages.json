@@ -79,5 +79,8 @@
     },
     "60min": {
         "message": "60 mins."
+    },
+    "mins": {
+        "message": "min(s)."
     }
 }
