@@ -165,7 +165,7 @@ export function toHtml(log) {
     let output =
         `<html><head><style>
 th {background-color:#bfa}
-tr:nth-child(2n) {background-color:#dfc}
+tr:nth-child(2n+1) {background-color:#dfc}
 </style></head><body><table><tbody>
 <tr>
     <th>${__("work_category")}</th>
