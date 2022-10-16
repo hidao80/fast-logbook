@@ -41,7 +41,7 @@ function updateLogs() {
                 // Objects are entered from similar instead of empty strings
                 str = "";
             }
-            ta.textContent = str;
+            ta.value = str;
 
             // Keep scrolling to the bottom.
             ta.scrollTo(0, ta.scrollHeight);
