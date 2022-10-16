@@ -1,14 +1,15 @@
 import { $, syncGet, FILE_TYPE_KEY } from "./lib/utils.js";
-import { i18nInit, translate } from "./lib/i18n.js";
+import { i18nInit, __, translate } from "./lib/i18n.js";
+import { Log } from "./lib/logger.js";
 
-window.onload = () => {
+document.addEventListener("DOMContentLoaded", () => {
     i18nInit();
 
-    for (const input of $('input')) {
+    for (const node of $('input')) {
         // Loading storage.sync
-        translate(input);
+        translate(node);
 
-        input.addEventListener('input', e => {
+        node.addEventListener('input', e => {
             const elem = e.target;
             chrome.storage.sync.set({ [elem.dataset.i18n]: elem.value });
         });
@@ -17,7 +18,8 @@ window.onload = () => {
     // Select the last item selected
     syncGet(FILE_TYPE_KEY)
         .then(type => {
-            $('select').value = type ? type : 'plainText';
+            Log.debug(type);
+            $('select').value = type || 'plainText';
         });
 
     $('select').addEventListener('change', e => {
@@ -25,4 +27,4 @@ window.onload = () => {
     });
 
     // debug();
-};
+});

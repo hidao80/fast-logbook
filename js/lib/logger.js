@@ -59,6 +59,6 @@ export class Logger {
     }
 }
 
-export default new Logger(true);
+export const Log = new Logger(true);
 export const enabled = new Logger(true);
 export const diabled = new Logger(false);

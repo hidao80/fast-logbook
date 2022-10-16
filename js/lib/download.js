@@ -1,5 +1,5 @@
 import { __ } from "./i18n.js";
-import { getTodayString } from "./utils.js";
+import { getTodayString, syncGet, LOG_DATA_KEY, FILE_TYPE_KEY } from "./utils.js";
 import { Log } from "./logger.js";
 
 /**
@@ -36,7 +36,7 @@ export function htmlTableDownload(log) {
  * @param {string} extension (filename) extension
  * @param {string} mimeType mime type
  */
-export const download = (outputDataString, extension, mimeType) => {
+export function download(outputDataString, extension, mimeType) {
     const reader = new FileReader();
     reader.readAsDataURL(new Blob([outputDataString], { type: mimeType }));
     reader.onload = () => {
@@ -45,7 +45,34 @@ export const download = (outputDataString, extension, mimeType) => {
             "filename": __("app_name") + "_" + getTodayString() + "." + extension
         });
     };
-};
+}
+
+export function outputLog() {
+    Promise.all([syncGet(LOG_DATA_KEY), syncGet(FILE_TYPE_KEY)])
+        .then(values => {
+            console.debug(values);
+            const log = values[0];
+            const type = values[1] || 'plainText';
+            const downloadFunction = type + "Download";
+            Log.debug(type, downloadFunction);
+
+            const outputStr = `
+<style>
+.pt-5 {padding-top:3rem;}
+</style>
+<div>
+${toHtml(log)}
+</div>
+<div class="pt-5"><pre><code>
+${log}
+</code></pre></div>
+<div class="pt-5"><pre><code>
+${toMarkdown(log)}
+</code></pre></div>
+`;
+            download(outputStr, '.html', 'text/html');
+        });
+}
 
 /**
  * Analyze and tabulate raw data from work hour logs
@@ -53,12 +80,12 @@ export const download = (outputDataString, extension, mimeType) => {
  * @param {string} text Raw data of work time logs
  * @returns {object} Categorized aggregate data (json)
  */
-export const parse = (text) => {
+export function parse(text) {
     const TIME_LENGTH = 16;
     const FIELD_SEPARATOR = ";";
     const RECORD_SEPARATOR = "\n";
 
-    let timeStamp = [], jso = {};
+    let timeStamp = [], obj = {};
 
     // Convert logs to JSON
     text.split(RECORD_SEPARATOR).forEach(line => {
@@ -68,39 +95,61 @@ export const parse = (text) => {
         const detail = junction < 0 ? '' : line.slice(junction + 1);
 
         timeStamp.push({ "time": time, "category": category });
-        if (!jso[category]) jso[category] = {};
-        jso[category].time = 0;
-        if (!jso[category].detail) jso[category].detail = [];
-        jso[category].detail.push(detail);
+        if (!obj[category]) obj[category] = {};
+        obj[category].time = 0;
+        if (!obj[category].detail) obj[category].detail = [];
+        obj[category].detail.push(detail);
     });
 
     // Eliminate duplication of work details
-    Object.keys(jso).forEach(item => {
-        jso[item].detail = Array.from(new Set(jso[item].detail)).join(", ");
+    Object.keys(obj).forEach(item => {
+        obj[item].detail = Array.from(new Set(obj[item].detail)).join(", ");
     });
 
     // Work time in minutes
     for (let i = 1; i < timeStamp.length; i++) {
-        let afterHour = parseInt(timeStamp[i].time.slice(-5, -3));
-        let beforeHour = parseInt(timeStamp[i - 1].time.slice(-5, -3));
-        Log.debug(afterHour, beforeHour);
-        let hour = afterHour - beforeHour < 0 ? afterHour + 24 - beforeHour : afterHour - beforeHour;
-        let min = parseInt(timeStamp[i].time.slice(-2)) - parseInt(timeStamp[i - 1].time.slice(-2));
+        const after = timeStamp[i].time;
+        const before = timeStamp[i - 1].time;
+        let hour = fetchHourFromTime(after) - fetchHourFromTime(before);
+        if (hour < 0) {
+            hour += 24;
+        }
+        let min = fetchMinFromTime(after) - fetchMinFromTime(before);
         // over the course of a day
         if (min < 0) {
             hour -= 1;
             min += 60;
         }
-        jso[timeStamp[i - 1].category].time += hour * 60 + min;
+        obj[timeStamp[i - 1].category].time += hour * 60 + min;
     }
 
     // Convert work time to 0.25 increments of time
-    Object.keys(jso).forEach(item => {
-        jso[item].round = Math.floor(jso[item].time / 60) + Math.round(jso[item].time % 60 / 15) / 4;
+    Object.keys(obj).forEach(item => {
+        obj[item].round = Math.floor(obj[item].time / 60) + Math.round(obj[item].time % 60 / 15) / 4;
     });
 
-    return jso;
-};
+    return obj;
+}
+
+/**
+ * Get the time from the date and time
+ *
+ * @param {string} time - "Y-m-d H:i:s"
+ * @returns {int} - hour
+ */
+function fetchHourFromTime(time) {
+    return parseInt(time.slice(-5, -3));
+}
+
+/**
+ * Get minutes from a date and time
+ *
+ * @param {string} time - "Y-m-d H:i:s"
+ * @returns {int} - minutes
+ */
+function fetchMinFromTime(time) {
+    return parseInt(time.slice(-2));
+}
 
 /**
  * Make a table of the aggregated time in HTML format
@@ -108,7 +157,7 @@ export const parse = (text) => {
  * @param {object} log Categorized aggregate data (json)
  * @returns {string} HTML Table
  */
-export const toHtml = (log) => {
+export function toHtml(log) {
     const dataJson = parse(log);
     const breakMark = "^";
     let sum = 0;
@@ -148,7 +197,7 @@ ${totalStr}</p>
 </bdoy></html>`;
 
     return output;
-};
+}
 
 /**
  * Make a markdown table of the aggregated time
@@ -156,7 +205,7 @@ ${totalStr}</p>
  * @param {object} log Categorized aggregate data (json)
  * @returns {string} markdown table
  */
-export const toMarkdown = (log) => {
+export function toMarkdown(log) {
     const dataJson = parse(log);
     const breakMark = "^";
     let sum = 0;
@@ -176,4 +225,4 @@ export const toMarkdown = (log) => {
     output += `\n${__("work_time_total")}： ` + (Math.floor(total / 60) + Math.round(total % 60 / 15) / 4) + " h";
 
     return output;
-};
+}
