@@ -11,7 +11,7 @@ export function i18nInit() {
         if (node.type == 'text') {
             node.value = str;
         } else {
-            node.textContent = str;
+            node.innerHTML = str;
         }
     }
 }

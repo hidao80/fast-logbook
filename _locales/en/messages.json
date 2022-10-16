@@ -30,7 +30,7 @@
         "message": "^Break"
     },
     "register_the_string_to_the_shortcut_key": {
-        "message": "Please register the string in the shortcut key. Tags beginning with \"^\" will not be counted."
+        "message": "Please register the string in the shortcut key. Tags beginning with \"^\" will not be counted.<br>After \";\", write the details and include them in the group of strings before \";\" for aggregation."
     },
     "punch_description": {
         "message": "Displays the stamp popup."
