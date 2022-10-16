@@ -92,6 +92,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    for (const node of $('label[data-shortcut-key]')) {
+        node.addEventListener('click', (e) => {
+            e.cancelBubble = true;
+            if (document.activeElement.value) return;
+            appendLog(appendTime(node.textContent))
+                .then(updateLogs);
+        });
+    }
+
     $('textarea').addEventListener('keyup', e => {
         saveLogs(e.target.value);
     });
