@@ -20,11 +20,32 @@
     "html_summary": {
         "message": "HTML Table"
     },
+    "popup_title": {
+        "message": "Fast logbook"
+    },
     "shortcut_1": {
         "message": "Study +PromotionalExams @work"
     },
     "shortcut_2": {
         "message": "Cleaning +housework @wrivate"
+    },
+    "shortcut_3": {
+        "message": ""
+    },
+    "shortcut_4": {
+        "message": ""
+    },
+    "shortcut_5": {
+        "message": ""
+    },
+    "shortcut_6": {
+        "message": ""
+    },
+    "shortcut_7": {
+        "message": ""
+    },
+    "shortcut_8": {
+        "message": ""
     },
     "shortcut_9": {
         "message": "^Break"

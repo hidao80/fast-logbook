@@ -1,100 +1,109 @@
-import { $, syncGet, LOG_DATA_KEY } from "./lib/utils.js";
+import { $, syncGet, syncSet, LOG_DATA_KEY, trimNewLine, appendTime } from "./lib/utils.js";
 import { i18nInit, __, translate } from "./lib/i18n.js";
-import { outputLog } from "./lib/download.js";
+import { downloadLog } from "./lib/download.js";
 import { Log } from "./lib/logger.js";
 
 /**
  * Add one log
  *
  * @param {*} tag One log without time of day
- * @return {Promise} Promise to register work log in sync
+ * @return {Promise}
  */
-export function appendLog(tag) {
-    /** var {int} LOG_MAX_LEN Maximum number of lines to be kept as a log. Lines older than this are discarded. */
-    const LOG_MAX_LEN = 100;
+export async function appendLog(tag) {
+    const textarea = $('textarea');
+    textarea.value += "\n" + tag;
+    textarea.value = trimNewLine(textarea.value);
 
-    return syncGet(LOG_DATA_KEY)
-        .then(log => {
-            const logStr = (log + "\n" + tag).replace(/(^\n|\n$|\n{2,})/g, "");  // Delete empty lines
-            const splitedLogs = logStr.split("\n").slice(-1 * LOG_MAX_LEN);
-            const formatedLog = logStr.replace(/.+\n$/, '');
-            chrome.storage.sync.set({ [LOG_DATA_KEY]: formatedLog });
-        });
+    // Keep scrolling to the bottom.
+    textarea.scrollTo(0, textarea.scrollHeight);
 }
 
 /**
- * Add one line to the work log
+ * Load the work log
+ *
+ * @return {Promise}
  */
-function updateLogs() {
-    const ta = $('textarea');
-    syncGet(LOG_DATA_KEY)
-        .then(str => {
-            if (typeof str != 'string') {
-                // Objects are entered from similar instead of empty strings
-                str = "";
-            }
-            ta.value = str;
+async function loadLogs() {
+    const textarea = $('textarea');
 
-            // Keep scrolling to the bottom.
-            ta.scrollTo(0, ta.scrollHeight);
-        });
+    // Objects are entered from similar instead of empty strings
+    textarea.value = await syncGet(LOG_DATA_KEY);
+
+    // Keep scrolling to the bottom.
+    textarea.scrollTo(0, textarea.scrollHeight);
 }
 
 /**
  * Save your work log
  *
  * @param {string} log
+ * @return {Promise}
  */
-function saveLogs(log) {
-    chrome.storage.sync.set({ [LOG_DATA_KEY]: log.replace(/\n+/g, "\n").replace(/(^\n+|\n+$)/g, "") });
+async function saveLogs(log) {
+    await syncSet({ [LOG_DATA_KEY]: trimNewLine(log) });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+/**
+ * Code to be executed upon completion of form loading
+ */
+document.addEventListener("DOMContentLoaded", async () => {
     i18nInit();
 
     for (const node of $('label')) {
         translate(node);
     }
 
-    $('input').addEventListener('change', (e) => {
-        appendLog(appendTime(e.target.value))
-            .then(updateLogs);
+    // When the entry to the 0th is confirmed, the log entered is imprinted.
+    $('input').addEventListener('change', async function() {
+        await appendLog(appendTime(this.value));
     });
 
-    $('button').addEventListener('click', (e) => {
-        outputLog();
-    });
+    // When the download button is pressed, the log is downloaded.
+    $('button').addEventListener('click', downloadLog);
 
-    document.body.addEventListener('keydown', (e) => {
-        e.cancelBubble = true;
+    // When a key is entered on the popup
+    document.body.addEventListener('keydown', async (e) => {
+        // e.stopPropagation();
         if (document.activeElement.value) return;
+
+        // When a numeric key is pressed
         if (/Digit\d/.test(e.code)) {
             if (e.code == 'Digit0') {
-                e.preventDefault();
+                // e.preventDefault();
                 $('input').focus();
             } else {
+                // For 1-9, imprint the preset tag.
                 const digit = e.code.slice(-1);
                 const node = $(`[data-shortcut-key="${digit}"]`);
-                appendLog(appendTime(node.value || node.textContent))
-                    .then(updateLogs);
+                await appendLog(appendTime(node.value || node.textContent));
             }
         } else if (e.code == "Enter" || e.code == "Escape" || e.code == "Alt+Shift+0") {
+            await saveLogs($('textarea').value);
             window.close();
         }
     });
 
+    // When you click on a preset tag
     for (const node of $('label[data-shortcut-key]')) {
-        node.addEventListener('click', (e) => {
-            e.cancelBubble = true;
+        node.addEventListener('click', async function(e) {
+            e.stopPropagation();
             if (document.activeElement.value) return;
-            appendLog(appendTime(node.textContent))
-                .then(updateLogs);
+            await appendLog(appendTime(this.textContent))
         });
     }
 
-    $('textarea').addEventListener('keyup', e => {
-        saveLogs(e.target.value);
+    // When a popup loses focus, it saves the contents of the textarea.
+    window.addEventListener('blur', async function() {
+        await saveLogs($('textarea').value);
     });
 
-    updateLogs();
+    //
+    $('textarea').addEventListener('keydown', async function(e) {
+        if (e.code == "Enter" || e.code == "Escape" || e.code == "Alt+Shift+0") {
+            await saveLogs(this.value);
+        }
+    });
+
+    // Load the last saved log
+    await loadLogs();
 });

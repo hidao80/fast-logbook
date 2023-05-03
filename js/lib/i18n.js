@@ -1,4 +1,4 @@
-import { $, syncGet } from "./utils.js";
+import { $, syncGet, syncSet } from "./utils.js";
 import { Log } from "./logger.js";
 
 /**
@@ -7,12 +7,7 @@ import { Log } from "./logger.js";
 export function i18nInit() {
     const nodes = $('[data-i18n]');
     for (const node of nodes) {
-        const str = __(node.dataset.i18n);
-        if (node.type == 'text') {
-            node.value = str;
-        } else {
-            node.innerHTML = str;
-        }
+        translate(node);
     }
 }
 
@@ -23,7 +18,11 @@ export function i18nInit() {
  * @returns {string} Translated text
  */
 export function __(key) {
-    return chrome.i18n.getMessage(key);
+    try {
+        return chrome.i18n.getMessage(key);
+    } catch (ex) {
+        return "";
+    }
 }
 
 /**
@@ -31,18 +30,13 @@ export function __(key) {
  *
  * @param {*} node Nodes in the DOM
  */
-export function translate(node) {
+export async function translate(node) {
     const key = node.dataset.i18n;
-    syncGet(key)
-        .then(str => {
-            if (!str) {
-                str = __(key);
-                chrome.storage.sync.set({ [key]: str });
-            }
-            if (node.type == 'text') {
-                node.value = str;
-            } else {
-                node.textContent = str;
-            }
-        });
+    const str = __(key);
+
+    if (node.type == 'text') {
+        node.value = str;
+    } else {
+        node.textContent = str;
+    }
 }

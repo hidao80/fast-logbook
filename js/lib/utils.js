@@ -19,6 +19,7 @@ export function $(selector) {
  * String the current time
  *
  * @returns {string} "Y-m-d H:i:s"
+ * @example getNowString() -> "2023-05-01"
  */
 export function getTodayString() {
     var date = new Date();
@@ -33,6 +34,9 @@ export function getTodayString() {
  *
  * @param {string|null} time - "Y-m-d H:i:s"
  * @returns {int|string} - hour
+ * @example fetchMinFromTime("2021-01-01 09:04:56") -> 9
+ * @example fetchMinFromTime("2021-01-01 09:34:56", false) -> "09"
+ * @example fetchMinFromTime() -> 9
  */
 export function fetchHourFromTime(time = null, isInt = true) {
     const date = time === null ? new Date() : new Date(time)
@@ -45,6 +49,9 @@ export function fetchHourFromTime(time = null, isInt = true) {
  *
  * @param {string|null} time - "Y-m-d H:i:s"
  * @returns {int|string} - minutes
+ * @example fetchMinFromTime("2021-01-01 12:04:56") -> 4
+ * @example fetchMinFromTime("2021-01-01 12:34:56", false) -> "04"
+ * @example fetchMinFromTime() -> 4
  */
 export function fetchMinFromTime(time = null, isInt = true) {
     const date = time === null ? new Date() : new Date(time)
@@ -58,11 +65,20 @@ export function fetchMinFromTime(time = null, isInt = true) {
  * @param {string} key Object Keys
  * @returns {Promise<string>} Promise returning a string stored in storage
  */
-export function syncGet(key) {
-    return chrome.storage.sync.get(key)
-        .then(obj => {
-            return obj[key] || __(key);
-        });
+export async function syncGet(key) {
+    const obj = await chrome.storage.sync.get(key);
+    return typeof obj != 'string' ? __(obj[key]) : __(key);
+}
+
+/**
+ * Stores strings in storage (asynchronous).
+ *
+ * @param {string} key Object Keys
+ * @returns {Promise<string>} Promise returning a string stored in storage
+ */
+export async function syncSet(key) {
+    const obj = await chrome.storage.sync.get(key);
+    return typeof obj != 'string' ? __(obj[key]) : __(key);
 }
 
 /**
@@ -70,6 +86,7 @@ export function syncGet(key) {
  *
  * @param {int|string|NaN} value
  * @returns {int} Rounding unit: 1, 5, 10, 15, 30, 60
+ * @example getRoundingUnit(20) -> 1
  */
 export function getRoundingUnit(value) {
     let mins = 1;
@@ -89,11 +106,22 @@ export function getRoundingUnit(value) {
  * Add time to work tag
  *
  * @param {string} tag
- * @returns {string} formatted a log. e.g.) "2023-01-01 00:00Work Contents"
+ * @returns {string} formatted a log.
+ * @example appendTime("Project A;Meeting") -> "2023-01-01 00:00Project A;Meeting"
  */
 export function appendTime(tag) {
     return getTodayString()
         + " "
         + fetchHourFromTime(null, false) + ":" + fetchMinFromTime(null, false)
         + tag;
+}
+
+/**
+ * Remove duplicate and terminating newline characters from log data.
+ * @param {string} text
+ * @returns {string} text
+ * @example trimNewLine("aa\nbb\ncc\n") -> "aa\nbb\ncc"
+ */
+export function trimNewLine(text) {
+    return text.replace(/\n{2,}/g, '\n').replace(/(^\n|\n$)/, '');
 }
