@@ -25,23 +25,26 @@ export function downloadLog() {
         .then(values => {
             const log = values[0];
             const mins = getRoundingUnit(values[1]);
-            const outputStr = `
-<style>
-.pt-5 {padding-top:3rem;}
-</style>
-<h2>${translate('html_summary')}</h2>
+            const outputStr =
+`<h2>${translate('html_summary')}</h2>
 <div>
 ${toHtml(log, mins)}
 </div>
 <h2 class="pt-5">${translate('plaintext_log')}</h2>
-<div><pre><code>
+<i id="plain-text-log" class="fa-sharp fa-regular fa-copy btn btn-outline-secondary"
+data-bs-trigger="manual" data-bs-toggle="tooltip" data-bs-placement="top" title="copy!"></i>
+<div class="form-control"><pre><code id="plain-text-log-source">
 ${log}
 </code></pre></div>
 <h2 class="pt-5">${translate('markdown_summary')}</h2>
-<div><pre><code>
+<i id="markdown-table-log" class="fa-sharp fa-regular fa-copy btn btn-outline-secondary"
+data-bs-trigger="manual" data-bs-toggle="tooltip" data-bs-placement="top" title="copy!"></i>
+<div class="form-control"><pre><code id="markdown-table-log-source">
 ${toMarkdown(log, mins)}
 </code></pre></div>
-`;
+<script>
+document.querySelectorAll("#plain-text-log,#markdown-table-log").forEach((t=>{const e=new bootstrap.Tooltip(t);t.addEventListener("click",(async t=>{t.preventDefault(),t.stopPropagation(),e.show(),setTimeout((()=>e.hide()),1e3);const o="plain-text-log"===t.target.id?document.querySelector("#plain-text-log-source").textContent:document.querySelector("#markdown-table-log-source").textContent;await(navigator?.clipboard?.writeText(o.trim()))}))}));
+</script>`;
             download(outputStr);
         });
 }
@@ -117,24 +120,26 @@ export function toHtml(log, mins) {
     let sum = 0;
     let total = 0;
     let output =
-        `<html><head><style>
-th {background-color:#bfa}
-tr:nth-child(2n+1) {background-color:#dfc}
-</style></head><body><table><tbody>
+`<html lang="ja" lang="en"><head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.bundle.min.js" integrity="sha512-i9cEfJwUwViEPFKdC1enz4ZRGBj8YQo6QByFTF92YXHi7waCqyexvRD75S5NVTsSiTv7rKWqG9Y5eFxmRsOn0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/css/bootstrap.min.css" integrity="sha512-72OVeAaPeV8n3BdZj7hOkaPSEk/uwpDkaGyP4W2jSzAC8tfiO4LMEDWoL3uFp5mcZu+8Eehb4GhZWFwvrss69Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head><body><table class="table table-striped-columns"><thead class="table-light">
 <tr>
-<th>${translate("work_category")}</th>
-<th>${translate("work_detail")}</th>
-<th>${translate("work_time_hour")}</th>
-<th>${translate("work_time_min")}</th>
-</tr>`;
+<th class="text-center">${translate("work_category")}</th>
+<th class="text-center">${translate("work_detail")}</th>
+<th class="text-center">${translate("work_time_hour")}</th>
+<th class="text-center">${translate("work_time_min")}</th>
+</tr>
+</thead><tbody class="table-group-divider">`;
 
     for (const category of Object.keys(dataJson).sort()) {
         output +=
-            `<tr>
-    <td style="white-space:nowrap">${category}</td>
-    <td>${dataJson[category].detail}</td>
-    <td style="text-align:right">${dataJson[category].round}</td>
-    <td style="text-align:right">${dataJson[category].time}</td>
+`<tr>
+<td>${category}</td>
+<td>${dataJson[category].detail}</td>
+<td class="text-end">${dataJson[category].round}</td>
+<td class="text-end">${dataJson[category].time}</td>
 </tr>`;
         if (category[0] != breakMark) sum += dataJson[category].time;
         total += dataJson[category].time;
@@ -144,11 +149,11 @@ tr:nth-child(2n+1) {background-color:#dfc}
     const totalStr = translate("work_time_total") + "： " + (Math.floor(total / 60) + Number((Math.round(total % 60 / mins) * mins / 60).toFixed(2))) + " h";
 
     output +=
-        `</tbod></table>
+`</tbody></table>
 <p>
 ${sumStr} (${sum} ${translate('mins')})<br>
-${totalStr} (${sum} ${translate('mins')})</p>
-</bdoy></html>`;
+${totalStr} (${total} ${translate('mins')})</p>
+</body></html>`;
 
     return output;
 }
@@ -177,7 +182,7 @@ export function toMarkdown(log, mins) {
     }
 
     output += `\n${translate("work_time_actual")}： ` + (Math.floor(sum / 60) + Number((Math.round(sum % 60 / mins) * mins / 60).toFixed(2))) + ` h (${sum} ${translate('mins')})`;
-    output += `\n${translate("work_time_total")}： ` + (Math.floor(total / 60) + Number((Math.round(total % 60 / mins) * mins / 60).toFixed(2))) + ` h (${sum} ${translate('mins')})`;
+    output += `\n${translate("work_time_total")}： ` + (Math.floor(total / 60) + Number((Math.round(total % 60 / mins) * mins / 60).toFixed(2))) + ` h (${total} ${translate('mins')})`;
 
     return output;
 }
