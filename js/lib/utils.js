@@ -22,14 +22,34 @@ export function $(selector) {
  */
 export function getTodayString() {
     var date = new Date();
-    var year = date.getFullYear();
-    var month = date.getMonth() + 1;
-    var day = date.getDate();
+    var yyyy = date.getFullYear().toString().padStart(4,"0");
+    var mm = (date.getMonth() + 1).toString().padStart(2,"0");
+    var dd = date.getDate().toString().padStart(2,"0");
+    return `${yyyy}-${mm}-${dd}`;
+}
 
-    var yyyy = `000${year}`.slice(-4);
-    var mm = `0${month}`.slice(-2);
-    var dd = `0${day}`.slice(-2);
-    return yyyy + "-" + mm + "-" + dd;
+/**
+ * Get the time from the date and time
+ *
+ * @param {string|null} time - "Y-m-d H:i:s"
+ * @returns {int|string} - hour
+ */
+export function fetchHourFromTime(time = null, isInt = true) {
+    const date = time === null ? new Date() : new Date(time)
+    const hour = date.getHours().toString().padStart(2,"0");
+    return isInt ? parseInt(hour) : hour;
+}
+
+/**
+ * Get minutes from a date and time
+ *
+ * @param {string|null} time - "Y-m-d H:i:s"
+ * @returns {int|string} - minutes
+ */
+export function fetchMinFromTime(time = null, isInt = true) {
+    const date = time === null ? new Date() : new Date(time)
+    const min = date.getMinutes().toString().padStart(2,"0");
+    return isInt ? parseInt(min) : min;
 }
 
 /**

@@ -1,5 +1,5 @@
 import { __ } from "./i18n.js";
-import { getTodayString, syncGet, getRoundingUnit, LOG_DATA_KEY, ROUNDING_UNIT_MINUTE_KEY } from "./utils.js";
+import { getTodayString, syncGet, getRoundingUnit, LOG_DATA_KEY, ROUNDING_UNIT_MINUTE_KEY, fetchHourFromTime, fetchMinFromTime } from "./utils.js";
 import { Log } from "./logger.js";
 
 /**
@@ -102,26 +102,6 @@ export function parse(text, mins) {
     });
 
     return obj;
-}
-
-/**
- * Get the time from the date and time
- *
- * @param {string} time - "Y-m-d H:i:s"
- * @returns {int} - hour
- */
-function fetchHourFromTime(time) {
-    return parseInt(time.slice(-5, -3));
-}
-
-/**
- * Get minutes from a date and time
- *
- * @param {string} time - "Y-m-d H:i:s"
- * @returns {int} - minutes
- */
-function fetchMinFromTime(time) {
-    return parseInt(time.slice(-2));
 }
 
 /**
