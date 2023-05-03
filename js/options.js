@@ -1,4 +1,4 @@
-import { $, syncGet, syncSet, getRoundingUnit, ROUNDING_UNIT_MINUTE_KEY } from "./lib/utils.js";
+import { $, getRoundingUnit, ROUNDING_UNIT_MINUTE_KEY } from "./lib/utils.js";
 import { i18nInit, translate } from "./lib/i18n.js";
 import { Log } from "./lib/logger.js";
 
@@ -9,25 +9,22 @@ document.addEventListener("DOMContentLoaded", async () => {
     i18nInit();
 
     // Init tags
-    for (const node of $('input')) {
-        node.value = await syncGet(node.dataset.i18n);
-        if (node.value == "undefined") {
-            node.value = translate(node.dataset.i18n);
-        }
+    $('input').forEach(async node => {
+        const str = (await chrome.storage.sync.get(node.dataset.i18n))[node.dataset.i18n];
+        node.value = (str && str != "undefined") ? str : translate(node.dataset.i18n);
 
         // When the focus is removed or changed, the input is saved.
-        ['blur', 'change'].forEach(event => {
-            node.addEventListener(event, async function() {
-                await syncSet(this.dataset.i18n, this.value.trim());
-            });
+        node.addEventListener('change', function(e) {
+            chrome.storage.sync.set({ [this.dataset.i18n]: this.value.trim() });
         });
-    }
+    });
 
     // Init rounding unit
-    $('select').value = getRoundingUnit(await syncGet(ROUNDING_UNIT_MINUTE_KEY));
+    const min = (await chrome.storage.sync.get(ROUNDING_UNIT_MINUTE_KEY))[ROUNDING_UNIT_MINUTE_KEY];
+    $('select').value = getRoundingUnit(min);
 
     // When the rounding unit is changed, the value is saved.
-    $('select').addEventListener('change', async function() {
-        await syncSet(ROUNDING_UNIT_MINUTE_KEY, parseInt(this.value));
+    $('select').addEventListener('change', function(e) {
+        chrome.storage.sync.set({ [ROUNDING_UNIT_MINUTE_KEY]: this.value });
     });
 });

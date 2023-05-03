@@ -59,28 +59,6 @@ export function fetchMinFromTime(time = null, isInt = true) {
 }
 
 /**
- * Retrieve strings stored in storage (asynchronous)
- *
- * @param {string} key Object Keys
- * @returns {Promise<string>} Promise returning a string stored in storage
- */
-export async function syncGet(key) {
-    const obj = await chrome.storage.sync.get(key);
-    return typeof obj != 'string' ? obj[key] : key;
-}
-
-/**
- * Stores strings in storage (asynchronous).
- *
- * @param {string} key Object key
- * @param {string} value Object value
- * @returns {Promise} Promise returning a string stored in storage
- */
-export async function syncSet(key, value) {
-    await chrome.storage.sync.set({ [key]: value });
-}
-
-/**
  * Obtain valid rounding unit time
  *
  * @param {int|string|NaN} value

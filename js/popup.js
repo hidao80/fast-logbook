@@ -1,5 +1,5 @@
-import { $, syncGet, syncSet, LOG_DATA_KEY, trimNewLine, appendTime } from "./lib/utils.js";
-import { i18nInit } from "./lib/i18n.js";
+import { $, LOG_DATA_KEY, trimNewLine, appendTime } from "./lib/utils.js";
+import { i18nInit, translate } from "./lib/i18n.js";
 import { downloadLog } from "./lib/download.js";
 import { Log } from "./lib/logger.js";
 
@@ -9,7 +9,7 @@ import { Log } from "./lib/logger.js";
  * @param {*} tag One log without time of day
  * @return {Promise}
  */
-export async function appendLog(tag) {
+export function appendLog(tag) {
     const textarea = $('textarea');
     textarea.value += "\n" + tag;
     textarea.value = trimNewLine(textarea.value);
@@ -24,13 +24,15 @@ export async function appendLog(tag) {
  * @return {Promise}
  */
 async function loadLogs() {
-    const textarea = $('textarea');
-
     // Objects are entered from similar instead of empty strings
-    textarea.value = await syncGet(LOG_DATA_KEY);
+    const str = (await chrome.storage.sync.get(LOG_DATA_KEY))[LOG_DATA_KEY];
+    if (str && str != "undefined") {
+        const textarea = $('textarea');
+        textarea.value = str;
 
-    // Keep scrolling to the bottom.
-    textarea.scrollTo(0, textarea.scrollHeight);
+        // Keep scrolling to the bottom.
+        textarea.scrollTo(0, textarea.scrollHeight);
+    }
 }
 
 /**
@@ -38,9 +40,8 @@ async function loadLogs() {
  *
  * @return {Promise}
  */
-async function saveLogs() {
-    const textarea = $('textarea');
-    await syncSet(LOG_DATA_KEY, trimNewLine(textarea.value));
+function saveLogs() {
+    chrome.storage.sync.set({ [LOG_DATA_KEY]: trimNewLine($('textarea').value) });
 }
 
 /**
@@ -51,8 +52,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // When you click on a preset tag
     for (const node of $('label[data-shortcut-key]')) {
-        node.textContent = await syncGet('shortcut_' + node.dataset.shortcutKey);
-        if (node.textContent == "undefined") {
+        const key = 'shortcut_' + node.dataset.shortcutKey;
+        const str = (await chrome.storage.sync.get(key))[key];
+        if (str && str != "undefined") {
+            node.textContent = str;
+        } else {
             node.textContent = translate(node.dataset.i18n);
         }
 
@@ -90,12 +94,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // When the download button is pressed, the log is downloaded.
-    $('button').addEventListener('click', downloadLog);
+    $('button').addEventListener('click', async () => downloadLog);
 
     // When the entry to the 0th is confirmed, the log entered is imprinted.
     $('input').addEventListener('keydown', async function(e) {
         if ("Enter" == e.code) {
-            // e.stopPropagation();
             if (this.value.length == 0) return;
             await appendLog(appendTime(this.value));
             this.value = '';
@@ -105,7 +108,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     //
     $('textarea').addEventListener('keydown', async function(e) {
         if ("Enter" == e.code) {
-            // e.stopPropagation();
             await saveLogs();
         }
     });

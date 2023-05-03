@@ -1,5 +1,5 @@
 import { translate } from "./i18n.js";
-import { getTodayString, syncGet, getRoundingUnit, LOG_DATA_KEY, ROUNDING_UNIT_MINUTE_KEY, fetchHourFromTime, fetchMinFromTime } from "./utils.js";
+import { getTodayString, LOG_DATA_KEY, ROUNDING_UNIT_MINUTE_KEY, fetchHourFromTime, fetchMinFromTime } from "./utils.js";
 import { Log } from "./logger.js";
 
 /**
@@ -20,12 +20,10 @@ export function download(outputDataString, extension = '.html', mimeType = 'text
     };
 }
 
-export function downloadLog() {
-    Promise.all([syncGet(LOG_DATA_KEY), syncGet(ROUNDING_UNIT_MINUTE_KEY)])
-        .then(values => {
-            const log = values[0];
-            const mins = getRoundingUnit(values[1]);
-            const outputStr =
+export async function downloadLog() {
+    const log = (await chrome.storage.sync.get(LOG_DATA_KEY))[LOG_DATA_KEY];
+    const mins = (await chrome.storage.sync.get(ROUNDING_UNIT_MINUTE_KEY))[ROUNDING_UNIT_MINUTE_KEY];
+    const outputStr =
 `<h2>${translate('html_summary')}</h2>
 <div>
 ${toHtml(log, mins)}
@@ -45,8 +43,7 @@ ${toMarkdown(log, mins)}
 <script>
 document.querySelectorAll("#plain-text-log,#markdown-table-log").forEach((t=>{const e=new bootstrap.Tooltip(t);t.addEventListener("click",(async t=>{t.preventDefault(),t.stopPropagation(),e.show(),setTimeout((()=>e.hide()),1e3);const o="plain-text-log"===t.target.id?document.querySelector("#plain-text-log-source").textContent:document.querySelector("#markdown-table-log-source").textContent;await(navigator?.clipboard?.writeText(o.trim()))}))}));
 </script>`;
-            download(outputStr);
-        });
+    download(outputStr);
 }
 
 /**
