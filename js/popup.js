@@ -94,7 +94,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // When the download button is pressed, the log is downloaded.
-    $('button').addEventListener('click', async () => downloadLog);
+    $('button').addEventListener('click', async () => {
+        downloadLog();
+    });
 
     // When the entry to the 0th is confirmed, the log entered is imprinted.
     $('input').addEventListener('keydown', async function(e) {
