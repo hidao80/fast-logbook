@@ -1,4 +1,4 @@
-import { $, syncGet, syncSet } from "./utils.js";
+import { $ } from "./utils.js";
 import { Log } from "./logger.js";
 
 /**
@@ -16,7 +16,7 @@ export function i18nInit() {
  *
  * @param {node|string} target Nodes in the DOM or keywords for the sentence to be translated
  */
-export async function translate(target) {
+export function translate(target) {
     const isObject = typeof target === 'object';
     const key = isObject ? target?.dataset?.i18n : target;
 
