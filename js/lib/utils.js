@@ -84,3 +84,16 @@ export function getRoundingUnit(value) {
     }
     return mins;
 }
+
+/**
+ * Add time to work tag
+ *
+ * @param {string} tag
+ * @returns {string} formatted a log. e.g.) "2023-01-01 00:00Work Contents"
+ */
+export function appendTime(tag) {
+    return getTodayString()
+        + " "
+        + fetchHourFromTime(null, false) + ":" + fetchMinFromTime(null, false)
+        + tag;
+}

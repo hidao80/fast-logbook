@@ -1,15 +1,7 @@
-import { $, getTodayString, syncGet, LOG_DATA_KEY, fetchHourFromTime, fetchMinFromTime } from "./lib/utils.js";
+import { $, syncGet, LOG_DATA_KEY } from "./lib/utils.js";
 import { i18nInit, __, translate } from "./lib/i18n.js";
 import { outputLog } from "./lib/download.js";
 import { Log } from "./lib/logger.js";
-
-function appendTime(tag) {
-    var d = new Date();
-    return getTodayString()
-        + " "
-        + fetchHourFromTime(null, false) + ":" + fetchMinFromTime(null, false)
-        + tag;
-}
 
 /**
  * Add one log
