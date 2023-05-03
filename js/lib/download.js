@@ -1,4 +1,4 @@
-import { __ } from "./i18n.js";
+import { translate } from "./i18n.js";
 import { getTodayString, syncGet, getRoundingUnit, LOG_DATA_KEY, ROUNDING_UNIT_MINUTE_KEY, fetchHourFromTime, fetchMinFromTime } from "./utils.js";
 import { Log } from "./logger.js";
 
@@ -15,12 +15,12 @@ export function download(outputDataString, extension = '.html', mimeType = 'text
     reader.onload = () => {
         chrome.downloads.download({
             "url": reader.result,
-            "filename": __("app_name") + "_" + getTodayString() + "." + extension
+            "filename": translate("app_name") + "_" + getTodayString() + "." + extension
         });
     };
 }
 
-export function outputLog() {
+export function downloadLog() {
     Promise.all([syncGet(LOG_DATA_KEY), syncGet(ROUNDING_UNIT_MINUTE_KEY)])
         .then(values => {
             const log = values[0];
@@ -29,15 +29,15 @@ export function outputLog() {
 <style>
 .pt-5 {padding-top:3rem;}
 </style>
-<h2>${__('html_summary')}</h2>
+<h2>${translate('html_summary')}</h2>
 <div>
 ${toHtml(log, mins)}
 </div>
-<h2 class="pt-5">${__('plaintext_log')}</h2>
+<h2 class="pt-5">${translate('plaintext_log')}</h2>
 <div><pre><code>
 ${log}
 </code></pre></div>
-<h2 class="pt-5">${__('markdown_summary')}</h2>
+<h2 class="pt-5">${translate('markdown_summary')}</h2>
 <div><pre><code>
 ${toMarkdown(log, mins)}
 </code></pre></div>
@@ -122,10 +122,10 @@ th {background-color:#bfa}
 tr:nth-child(2n+1) {background-color:#dfc}
 </style></head><body><table><tbody>
 <tr>
-    <th>${__("work_category")}</th>
-    <th>${__("work_detail")}</th>
-    <th>${__("work_time_hour")}</th>
-    <th>${__("work_time_min")}</th>
+<th>${translate("work_category")}</th>
+<th>${translate("work_detail")}</th>
+<th>${translate("work_time_hour")}</th>
+<th>${translate("work_time_min")}</th>
 </tr>`;
 
     for (const category of Object.keys(dataJson).sort()) {
@@ -140,14 +140,14 @@ tr:nth-child(2n+1) {background-color:#dfc}
         total += dataJson[category].time;
     }
 
-    const sumStr = __("work_time_actual") + "： " + (Math.floor(sum / 60) + Number((Math.round(sum % 60 / mins) * mins / 60).toFixed(2))) + " h";
-    const totalStr = __("work_time_total") + "： " + (Math.floor(total / 60) + Number((Math.round(total % 60 / mins) * mins / 60).toFixed(2))) + " h";
+    const sumStr = translate("work_time_actual") + "： " + (Math.floor(sum / 60) + Number((Math.round(sum % 60 / mins) * mins / 60).toFixed(2))) + " h";
+    const totalStr = translate("work_time_total") + "： " + (Math.floor(total / 60) + Number((Math.round(total % 60 / mins) * mins / 60).toFixed(2))) + " h";
 
     output +=
         `</tbod></table>
 <p>
-${sumStr} (${sum} ${__('mins')})<br>
-${totalStr} (${sum} ${__('mins')})</p>
+${sumStr} (${sum} ${translate('mins')})<br>
+${totalStr} (${sum} ${translate('mins')})</p>
 </bdoy></html>`;
 
     return output;
@@ -166,7 +166,7 @@ export function toMarkdown(log, mins) {
     let sum = 0;
     let total = 0;
     let output =
-        `${__("work_category")} | ${__("work_detail")} | ${__("work_time_hour")} | ${__("work_time_min")}
+        `${translate("work_category")} | ${translate("work_detail")} | ${translate("work_time_hour")} | ${translate("work_time_min")}
 --- | --- | --: | --:
 `;
 
@@ -176,8 +176,8 @@ export function toMarkdown(log, mins) {
         total += dataJson[category].time;
     }
 
-    output += `\n${__("work_time_actual")}： ` + (Math.floor(sum / 60) + Number((Math.round(sum % 60 / mins) * mins / 60).toFixed(2))) + ` h (${sum} ${__('mins')})`;
-    output += `\n${__("work_time_total")}： ` + (Math.floor(total / 60) + Number((Math.round(total % 60 / mins) * mins / 60).toFixed(2))) + ` h (${sum} ${__('mins')})`;
+    output += `\n${translate("work_time_actual")}： ` + (Math.floor(sum / 60) + Number((Math.round(sum % 60 / mins) * mins / 60).toFixed(2))) + ` h (${sum} ${translate('mins')})`;
+    output += `\n${translate("work_time_total")}： ` + (Math.floor(total / 60) + Number((Math.round(total % 60 / mins) * mins / 60).toFixed(2))) + ` h (${sum} ${translate('mins')})`;
 
     return output;
 }

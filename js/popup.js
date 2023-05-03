@@ -1,5 +1,5 @@
 import { $, syncGet, syncSet, LOG_DATA_KEY, trimNewLine, appendTime } from "./lib/utils.js";
-import { i18nInit, __, translate } from "./lib/i18n.js";
+import { i18nInit, translate } from "./lib/i18n.js";
 import { downloadLog } from "./lib/download.js";
 import { Log } from "./lib/logger.js";
 

@@ -1,4 +1,4 @@
-import { __ } from "./i18n.js";
+import { translate } from "./i18n.js";
 import { Log } from "./logger.js";
 
 export const LOG_DATA_KEY = 'log';
@@ -67,7 +67,7 @@ export function fetchMinFromTime(time = null, isInt = true) {
  */
 export async function syncGet(key) {
     const obj = await chrome.storage.sync.get(key);
-    return typeof obj != 'string' ? __(obj[key]) : __(key);
+    return typeof obj != 'string' ? translate(obj[key]) : translate(key);
 }
 
 /**
@@ -78,7 +78,7 @@ export async function syncGet(key) {
  */
 export async function syncSet(key) {
     const obj = await chrome.storage.sync.get(key);
-    return typeof obj != 'string' ? __(obj[key]) : __(key);
+    return typeof obj != 'string' ? translate(obj[key]) : translate(key);
 }
 
 /**

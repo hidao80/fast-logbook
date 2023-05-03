@@ -12,31 +12,27 @@ export function i18nInit() {
 }
 
 /**
- * Use i18n to internationalize phrases
- *
- * @param {string} key Keywords for the sentence to be translated
- * @returns {string} Translated text
- */
-export function __(key) {
-    try {
-        return chrome.i18n.getMessage(key);
-    } catch (ex) {
-        return "";
-    }
-}
-
-/**
  * Translate default values
  *
- * @param {*} node Nodes in the DOM
+ * @param {node|string} target Nodes in the DOM or keywords for the sentence to be translated
  */
-export async function translate(node) {
-    const key = node.dataset.i18n;
-    const str = __(key);
+export async function translate(target) {
+    const isObject = typeof target === 'object';
+    const key = isObject ? target?.dataset?.i18n : target;
 
-    if (node.type == 'text') {
-        node.value = str;
-    } else {
-        node.textContent = str;
+    let str = "";
+    try {
+        str = chrome.i18n.getMessage(key);
+    } catch (ex) {
+        // str = "";
     }
+
+    if (isObject) {
+        if (['input'].includes(target.tagName.toLowerCase())) {
+            target.value = str;
+        } else {
+            target.textContent = str;
+        }
+    }
+    return str;
 }
