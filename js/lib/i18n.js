@@ -31,7 +31,7 @@ export function translate(target) {
         if (['input'].includes(target.tagName.toLowerCase())) {
             target.value = str;
         } else {
-            target.textContent = str;
+            target.innerHTML = str;
         }
     }
     return str;
