@@ -27,4 +27,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     $('select').addEventListener('change', function(e) {
         chrome.storage.sync.set({ [ROUNDING_UNIT_MINUTE_KEY]: this.value });
     });
+
+    // Synchronize when the setting changes.
+    chrome.storage.onChanged.addListener(async (changes, areaName) => {
+        if (areaName == 'sync') {
+            for (const [key, {oldValue, newValue}] of Object.entries(changes)) {
+                const target = key == ROUNDING_UNIT_MINUTE_KEY ? $('select') : $(`[data-i18n="${key}"]`);
+                target.value = newValue;
+            }
+        }
+    });
 });

@@ -121,6 +121,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     });
 
+    // When the content of the textarea changes, it is synchronized.
+    chrome.storage.onChanged.addListener(async (changes, areaName) => {
+        if (areaName == 'sync') {
+            $('textarea').value = changes[LOG_DATA_KEY].newValue;
+        }
+    });
+
     // Load the last saved log
     await loadLogs();
 });
