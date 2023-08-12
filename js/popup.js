@@ -101,6 +101,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     // When the entry to the 0th is confirmed, the log entered is imprinted.
     $('input').addEventListener('keydown', async function(e) {
         if ("Enter" == e.code) {
+            // Ignore events processed by the IME
+            if (e.isComposing || e.keyCode === 229) {
+                return;
+            }
+
             if (this.value.length == 0) return;
             await appendLog(appendTime(this.value));
             this.value = '';
@@ -110,6 +115,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     //
     $('textarea').addEventListener('keydown', async function(e) {
         if ("Enter" == e.code) {
+            // Ignore events processed by the IME
+            if (e.isComposing || e.keyCode === 229) {
+                return;
+            }
             await saveLogs();
         }
     });
