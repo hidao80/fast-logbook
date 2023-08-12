@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         node.addEventListener('click', async function(e) {
             e.stopPropagation();
             if (document.activeElement.value) return;
-            await appendLog(appendTime(this.textContent))
+            await appendLog(appendTime(this.textContent));
             await saveLogs();
         });
     }
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const inputDigit = matches[1];
             if (inputDigit == '0') {
                 // When 0 is pressed, focus on the input field.
-                e.preventDefault()
+                e.preventDefault();
                 e.stopPropagation();
                 $('input').focus();
                 $('input').value = '';
