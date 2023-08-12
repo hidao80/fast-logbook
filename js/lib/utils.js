@@ -38,7 +38,7 @@ export function getTodayString() {
  * @example fetchMinFromTime() -> 9
  */
 export function fetchHourFromTime(time = null, isInt = true) {
-    const date = time === null ? new Date() : new Date(time)
+    const date = time === null ? new Date() : new Date(time);
     const hour = date.getHours().toString().padStart(2,"0");
     return isInt ? parseInt(hour) : hour;
 }
@@ -53,7 +53,7 @@ export function fetchHourFromTime(time = null, isInt = true) {
  * @example fetchMinFromTime() -> 4
  */
 export function fetchMinFromTime(time = null, isInt = true) {
-    const date = time === null ? new Date() : new Date(time)
+    const date = time === null ? new Date() : new Date(time);
     const min = date.getMinutes().toString().padStart(2,"0");
     return isInt ? parseInt(min) : min;
 }
