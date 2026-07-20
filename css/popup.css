@@ -1,9 +1,35 @@
 /* Read from popup.html */
+:root {
+    --item-font-size: 14px;
+    --log-font-size: 15px;
+    --textarea-height: 196px;
+    --line-height: 1.2;
+    --shortcut-padding: 2px;
+}
+
 body.dc6a3b0594269eefaeb {
     width: 480px;
 }
 
+.input-group-text{
+    font-size: var(--item-font-size) !important;
+    line-height: var(--line-height) !important;
+    padding-top: var(--shortcut-padding) !important;
+    padding-bottom: var(--shortcut-padding) !important;
+}
+label.form-control {
+    font-size: var(--item-font-size) !important;
+    line-height: var(--line-height) !important;
+    padding-top: var(--shortcut-padding) !important;
+    padding-bottom: var(--shortcut-padding) !important;
+}
+
 textarea.row-6 {
-    height: calc(1.3em * 6);
-    line-height: 1.3;
+    min-height: var(--textarea-height);
+    max-height: var(--textarea-height);
+    margin: 0;
+    line-height: var(--line-height) !important;
+    overflow: auto;
+    resize: none;
+    font-size: var(--log-font-size) !important;
 }
